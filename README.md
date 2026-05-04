@@ -1,26 +1,20 @@
-The Ascender installer is a script that makes for relatively easy
-install of Ascender Automation Platform on Kubernetes platforms of
-multiple flavors. The installer is being expanded to new Kubernetes
-platforms as users/contributors allow, and if you have specific needs
-for a platform not yet supported, please submit an issue to this
-Github repository.
+This repository provides the scripts and documentation for creating
+Kubernetes clusters for Ascender Automation Platform deployments. It
+was split from https://github.com/ctrliq/ascender-install, which now
+contains the steps for installing Ascender itself. If you need to
+deploy Ascender after the cluster is ready, use that repository.
 
-While Ascender installs on Kubernetes, you don't need to be a guru in
-Kubernetes, or even have a Kubernetes cluster up and working!  For
-each specified Kubernetes platform, the installer will set up a
-Kubernetes cluster on your behalf, and set up the cluster access file
-at its default location of `~/.kube/config`.  Windows and Network
-admins rejoice!
+While this repository provisions Kubernetes clusters, you do not need
+to be a guru in Kubernetes, or even have a Kubernetes cluster up and
+working. For each specified Kubernetes platform, the installer will
+set up a Kubernetes cluster on your behalf and set up the cluster
+access file at its default location of `~/.kube/config`.
 
 ## Table of Contents
 
 - [General Prerequisites](#general-prerequisites)
-- [Optional Components](#optional-components)
 - [Configuration File](#configuration-file)
 - [Installation Guides](#installation-guides)
-- [Upgrading](#upgrading-ascender)
-- [Uninstall](#uninstall)
-- [Contributing](#contributing)
 - [Reporting Issues](#reporting-issues)
 
 ## General Prerequisites
@@ -61,22 +55,6 @@ admins rejoice!
 [kubeconfig]: https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/
 [cluster]: https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#context
 
-## Optional Components
-
-- An external PostgreSQL server that the Ascender application can
-  access. If not specified, the AWX Operator responsible for
-  installing Ascender will create a managed PostgreSQL server.
-
-### Offline Installation
-
-For certain Kubernetes platforms (such as k3s, kubeadm, rke2), the Ascender installer supports installation for clusters that do not have outside internet access. In these cases, you can either use:
-  - An included bundle of container images (this is the case for k3s)
-  - Move the Ascender and Ledger container images into an internal container registry for the installer to consume (this is the case for rke2 and kubeadm)
-
-A bundled AWX operator is also included for the purposes of offline install.
-
-For more detailed instructions, see the section on the corresponding Kubernetes platform.
-
 ## Configuration File and Inventory
 
 There is a [default configuration file](default.config.yml) that will
@@ -91,42 +69,9 @@ The Ascender Install script also uses the Ansible inventory file, [inventory](./
 
 For both the config file and inventory files, you will find templates for each Kubernetes distribution in its corresponding directory in [docs](./docs/). You can use these templates as guides for how `custom.config.ml` and `inventory` should look for your particular install.
 
-The [**Uninstall**](#uninstall) section of this tutorial references
-two of the variables that need to be set:
-
-- `k8s_platform`: The Kubernetes platform Ascender is being installed
-  on. This could be K3s, EKS, GKE, or AKS.
-- `tmp_dir`: The directory on the server running the install script,
-  where temporary artifacts will be stored.
-
-All of the variables and flags in these files have their
-description/proper usage directly present in the comments.
-
 ## Installation Guides
 
 - [Installation Guides by Kubernetes Platform](docs/README.md)
-- [Configuration Guides](docs/README.md)
-- [Troubleshooting Guides](docs/README.md)
-
-## Adding Components/Configuration Changes
-
-Consider a situation where you have already installed Ascender, and wish to change one or more of the attributes of how it is deployed. Some of these changes may include:
-
-- Moving from non-SSL to an SSL connection 
-- Installing Ledger when you may have only installed Ascender first
-- Changing the version of Ascender and or Ledger that is installed
-
-This can be accomplished by either running `config_vars.sh` again, or editing an existing `custom.config.yml`, in each case, changing the desired install variables. You can then rerun `setup.sh`.`
-
-## Upgrading Ascender
-
-Refer to the following [Upgrade Guide](docs/configuration/upgrading.md) to upgrade Ascender or Ledger
-
-
-## Uninstall
-
-Refer to the following [Uninstall Guide](docs/configuration/uninstall.md) to uninstall Ascender or Ledger
-
 
 ## Reporting Issues
 
